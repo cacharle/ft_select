@@ -13,39 +13,34 @@
 MAKE = make
 RM = rm -f
 
-LIBFT_DIR = libft
+NAME = ft_select
 
+LIBFTDIR = libft
 SRCDIR = src
 INCDIR = include
 OBJDIR = obj
 
-OBJ_DIRS = $(shell find $(SRCDIR) -type d | sed 's/src/obj/')
+OBJSUBDIRS = $(shell find $(SRCDIR) -type d | sed 's/src/obj/')
 
 CC = gcc
-CCFLAGS = -I$(LIBFT_DIR)/include -I$(INCDIR) -Wall -Wextra #-Werror
-LDFLAGS = -L$(LIBFT_DIR) -lft
+CCFLAGS = -I$(LIBFTDIR)/include -I$(INCDIR) -Wall -Wextra #-Werror
+LDFLAGS = -L$(LIBFTDIR) -lft -lcurses
 
-NAME = ft_select
-SRC_FILES = main.c \
-			buf.c \
-			state.c \
-			stdin.c
-
-SRC = $(addprefix $(SRCDIR)/,$(SRC_FILES))
+SRC = $(shell find $(SRCDIR) -type f -name "*.c")
 OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
-INCLUDE = $(addprefix $(INCDIR), fractol.h)
+INC = $(shell find $(INCDIR) -type f -name "*.h")
 
 all: prebuild libft_all $(NAME)
 
 bonus: all
 
 prebuild:
-	@for subdir in $(OBJ_DIRS); do mkdir -p $$subdir; done
+	@for subdir in $(OBJSUBDIRS); do mkdir -p $$subdir; done
 
 $(NAME): $(OBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INC)
 	$(CC) $(CCFLAGS) -c -o $@ $<
 
 clean: libft_fclean
@@ -57,7 +52,7 @@ fclean: clean
 re: fclean all
 
 libft_all:
-	$(MAKE) -C $(LIBFT_DIR) all
+	$(MAKE) -C $(LIBFTDIR) all
 
 libft_fclean:
-	$(MAKE) -C $(LIBFT_DIR) fclean
+	$(MAKE) -C $(LIBFTDIR) fclean

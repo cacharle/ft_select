@@ -13,19 +13,3 @@ t_buf	buf_new(char **args, int size)
 	}
 	return (buf);
 }
-
-void	buf_print(t_buf buf, int size)
-{
-	int	i;
-
-	i = 0;
-	while (i < size)
-	{
-		ft_putchar('[');
-		ft_putchar(buf[i].selected ? 'x' : ' ');
-		ft_putchar(']');
-		ft_putchar(' ');
-		ft_putendl(buf[i].text);
-		i++;
-	}
-}

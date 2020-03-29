@@ -2,22 +2,27 @@
 
 int main(int argc, char **argv)
 {
-	struct termios	saved;
-	struct termios	tmp;
-	t_state *state;
+	t_state			state;
+	struct termios	term_saved;
 
-	tcgetattr(STDIN_FILENO, &tmp);
-	saved = tmp;
-	tmp.c_lflag &= ~(ICANON | ECHO);
-	tcsetattr(STDIN_FILENO, TCSANOW, &tmp);
-
-	state = state_new(argc, argv);
-	buf_print(state->buf, state->buf_size);
-
-	stdin_loop(state);
-
-	tcsetattr(STDIN_FILENO, TCSANOW, &saved);
-	state_destroy(state);
+	if (!isatty(STDIN_FILENO))
+	{
+		ft_putendl_fd("Error: stdin must be a tty", STDERR_FILENO);
+		return (1);
+	}
+	if (argc < 2)
+	{
+		ft_putstr("Usage: ");
+		ft_putstr(argv[0]);
+		ft_putendl(" options...");
+		return (1);
+	}
+	state_init(&state, argc, argv);
+	term_init(&term_saved);
+	state_print(&state);
+	stdin_loop(&state);
+	term_quit(&term_saved);
+	state_quit(&state);
 	return 0;
 }
 
