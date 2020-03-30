@@ -54,7 +54,6 @@ static bool		exec_key(t_state *state, t_key key)
 	}
 	else if (key == EKEY_RETURN)
 	{
-		ft_putstr(state->clear_str);
 		state_print_selected(state);
 		return (false);
 	}

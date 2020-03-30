@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 # include <unistd.h>
+# include <fcntl.h>
 # include <sys/ioctl.h>
 # include <stdlib.h>
 # include <stdbool.h>
@@ -32,6 +33,7 @@ typedef struct
 	char			*clear_str;
 	int				rows;
 	int				cols;
+	int				term_fd;
 }					t_state;
 
 typedef enum
